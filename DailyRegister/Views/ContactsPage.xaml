@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:DailyRegister.ViewModels"
+             x:Class="DailyRegister.Views.ContactsPage"
+             x:DataType="viewmodels:ContactsViewModel"
+             xmlns:models="clr-namespace:DailyRegister.Models"
+             Title="Contacts">
+
+    <Grid RowDefinitions="Auto,*" Padding="16">
+
+        <!-- Header with Add Button -->
+        <Button Grid.Row="0"
+                Text="+ Add Contact"
+                Command="{Binding AddContactCommand}"
+                HorizontalOptions="End"
+                Margin="0,0,0,8" />
+
+        <!-- Contacts List -->
+        <CollectionView Grid.Row="1"
+                         ItemsSource="{Binding Contacts}"
+                         SelectionMode="None">
+
+            <CollectionView.EmptyView>
+                <Label Text="No contacts yet. Add your first contact."
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="Gray" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Contact">
+                    <Border Padding="12" Margin="0,4"
+        StrokeShape="RoundRectangle 8"
+        Stroke="{StaticResource Primary}"
+        BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                            <!-- Name and Phone -->
+                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                <Label Text="{Binding Name}"
+                           FontSize="16" />
+                                <Label Text="{Binding Phone}"
+                           FontSize="13"
+                           TextColor="Gray" />
+                            </VerticalStackLayout>
+
+                            <!-- Edit Button -->
+                            <Button Grid.Column="1"
+                        Text="Edit"
+                        FontSize="12"
+                        Padding="8,4"
+                        BackgroundColor="{StaticResource Primary}"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ContactsViewModel}}, Path=EditContactCommand}"
+                        CommandParameter="{Binding .}" />
+
+                            <!-- Delete Button -->
+                            <Button Grid.Column="2"
+                        Text="Delete"
+                        FontSize="12"
+                        Padding="8,4"
+                        BackgroundColor="Red"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ContactsViewModel}}, Path=DeleteContactCommand}"
+                        CommandParameter="{Binding .}" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

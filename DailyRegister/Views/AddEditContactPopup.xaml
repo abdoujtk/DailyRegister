@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:DailyRegister.ViewModels"
+             x:Class="DailyRegister.Views.AddEditContactPopup"
+             x:DataType="viewmodels:AddEditContactViewModel"
+             Title="Add Contact">
+
+    <VerticalStackLayout Padding="20" Spacing="16">
+
+        <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" />
+
+        <Label Text="Name" />
+        <Entry Text="{Binding Name}" Placeholder="Contact name" />
+
+        <Label Text="Phone" />
+        <Entry Text="{Binding Phone}" Placeholder="Phone number (optional)" Keyboard="Telephone" />
+
+        <Label Text="Notes" />
+        <Editor Text="{Binding Notes}" Placeholder="Notes (optional)" HeightRequest="100" />
+
+        <Button Text="Save"
+                Command="{Binding SaveCommand}"
+                BackgroundColor="{StaticResource Primary}" />
+
+        <Button Text="Cancel"
+                Command="{Binding CancelCommand}"
+                BackgroundColor="Gray" />
+
+    </VerticalStackLayout>
+
+</ContentPage>
