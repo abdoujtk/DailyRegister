@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
+using DailyRegister.Services;
+using Microsoft.Extensions.Logging;
 
 namespace DailyRegister
 {
@@ -13,6 +14,7 @@ namespace DailyRegister
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             }).UseMauiCommunityToolkit();
+            builder.Services.AddSingleton<DatabaseService>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

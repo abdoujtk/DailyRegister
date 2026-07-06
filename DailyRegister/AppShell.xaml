@@ -6,9 +6,6 @@
     xmlns:local="clr-namespace:DailyRegister"
     Title="DailyRegister">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    
 
 </Shell>
