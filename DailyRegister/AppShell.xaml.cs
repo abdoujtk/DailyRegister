@@ -9,5 +9,6 @@ public partial class AppShell : Shell
         InitializeComponent();
         Routing.RegisterRoute("AddEditContact", typeof(AddEditContactPopup));
         Routing.RegisterRoute("AddEditEvent", typeof(AddEditEventPopup));
+        Routing.RegisterRoute("EventDetail", typeof(EventDetailPage));
     }
 }

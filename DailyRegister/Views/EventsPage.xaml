@@ -7,7 +7,7 @@
              x:DataType="viewmodels:EventsViewModel"
              Title="Daily Register">
 
-    <Grid RowDefinitions="Auto,*" Padding="16">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16">
 
         <!-- Header -->
         <Button Grid.Row="0"
@@ -16,8 +16,16 @@
                 HorizontalOptions="End"
                 Margin="0,0,0,8" />
 
+        <!-- Filter Bar -->
+        <HorizontalStackLayout Grid.Row="1" Spacing="8" Margin="0,0,0,8">
+            <Label Text="Status:" VerticalOptions="Center" FontSize="13" />
+            <Picker ItemsSource="{Binding StatusFilters}"
+            SelectedItem="{Binding StatusFilter}"
+            WidthRequest="120" />
+        </HorizontalStackLayout>
+
         <!-- Events List -->
-        <CollectionView Grid.Row="1"
+        <CollectionView Grid.Row="2"
                          ItemsSource="{Binding Events}"
                          SelectionMode="None">
 
@@ -35,23 +43,53 @@
                             Stroke="{StaticResource Primary}"
                             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
 
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer
+        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:EventsViewModel}}, Path=EventTappedCommand}"
+        CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+
                         <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto,Auto" RowSpacing="4" ColumnSpacing="8">
 
                             <!-- Row 0: Type badge and Date -->
                             <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Spacing="8">
                                 <Border Padding="6,2"
-                                        StrokeShape="RoundRectangle 4"
-                                        Stroke="Transparent"
-                                        BackgroundColor="{StaticResource Primary}">
+            StrokeShape="RoundRectangle 4"
+            Stroke="Transparent"
+            BackgroundColor="{StaticResource Primary}">
                                     <Label Text="{Binding Type}"
-                                           FontSize="11"
-                                           TextColor="White" />
+               FontSize="11"
+               TextColor="White" />
                                 </Border>
+
+                                <!-- Status Badge (only visible for debts) -->
+                                <Border Padding="6,2"
+            StrokeShape="RoundRectangle 4"
+            Stroke="Transparent"
+            IsVisible="{Binding Status, Converter={StaticResource IsNotNullConverter}}">
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border"
+                         Binding="{Binding Status}"
+                         Value="paid">
+                                            <Setter Property="BackgroundColor" Value="Green" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Border"
+                         Binding="{Binding Status}"
+                         Value="unpaid">
+                                            <Setter Property="BackgroundColor" Value="Red" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <Label Text="{Binding Status}"
+               FontSize="11"
+               TextColor="White" />
+                                </Border>
+
                                 <Label Text="{Binding EventDate, StringFormat='{0:dd/MM/yyyy}'}"
-                                       FontSize="13"
-                                       TextColor="Gray"
-                                       VerticalOptions="Center" />
+           FontSize="13"
+           TextColor="Gray"
+           VerticalOptions="Center" />
                             </HorizontalStackLayout>
+
 
                             <!-- Edit Button -->
                             <Button Grid.Row="0" Grid.Column="1"
