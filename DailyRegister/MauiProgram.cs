@@ -21,10 +21,14 @@ namespace DailyRegister
             // ViewModels
             builder.Services.AddSingleton<ContactsViewModel>();
             builder.Services.AddTransient<AddEditContactViewModel>();
+            builder.Services.AddSingleton<EventsViewModel>();
+            builder.Services.AddTransient<AddEditEventViewModel>();
 
             // Pages
             builder.Services.AddSingleton<ContactsPage>();
             builder.Services.AddTransient<AddEditContactPopup>();
+            builder.Services.AddSingleton<EventsPage>();
+            builder.Services.AddTransient<AddEditEventPopup>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

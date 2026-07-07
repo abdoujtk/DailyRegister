@@ -1,13 +1,13 @@
 ﻿using DailyRegister.Views;
 
-namespace DailyRegister
+namespace DailyRegister;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-            Routing.RegisterRoute("AddEditContact", typeof(AddEditContactPopup));
-        }
+        InitializeComponent();
+        Routing.RegisterRoute("AddEditContact", typeof(AddEditContactPopup));
+        Routing.RegisterRoute("AddEditEvent", typeof(AddEditEventPopup));
     }
 }
