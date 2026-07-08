@@ -36,4 +36,7 @@ public class AppEvent
 
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
     // Last updated
+
+    [Ignore]
+    public string? ContactName { get; set; }
 }

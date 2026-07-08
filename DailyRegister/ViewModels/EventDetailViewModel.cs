@@ -95,4 +95,6 @@ public partial class EventDetailViewModel : ObservableObject
     {
         await Shell.Current.GoToAsync("..");
     }
+
+
 }
