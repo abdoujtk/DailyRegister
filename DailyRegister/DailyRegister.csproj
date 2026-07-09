@@ -83,6 +83,9 @@
 	  <MauiXaml Update="Views\ContactsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\DashboardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\EventDetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

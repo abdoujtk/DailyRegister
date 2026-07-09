@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:DailyRegister.ViewModels"
+             xmlns:models="clr-namespace:DailyRegister.Models"
+             x:Class="DailyRegister.Views.DashboardPage"
+             x:DataType="viewmodels:DashboardViewModel"
+             Title="Dashboard">
+
+    <ScrollView Padding="16">
+        <VerticalStackLayout Spacing="16">
+
+            <!-- Page Title -->
+            <Label Text="Dashboard"
+                   FontSize="24"
+                   FontAttributes="Bold" />
+
+            <!-- Stats Cards Row -->
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" RowSpacing="8" ColumnSpacing="8">
+
+                <!-- Card 1: Today's Events -->
+                <Border Grid.Row="0" Grid.Column="0"
+                        Padding="16"
+                        StrokeShape="RoundRectangle 8"
+                        Stroke="{StaticResource Primary}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Today"
+                               FontSize="12"
+                               TextColor="Gray" />
+                        <Label Text="{Binding TotalEventsToday}"
+                               FontSize="32"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}" />
+                        <Label Text="events"
+                               FontSize="12"
+                               TextColor="Gray" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Card 2: Unpaid Debts -->
+                <Border Grid.Row="0" Grid.Column="1"
+                        Padding="16"
+                        StrokeShape="RoundRectangle 8"
+                        Stroke="Orange"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Unpaid"
+                               FontSize="12"
+                               TextColor="Gray" />
+                        <Label Text="{Binding TotalUnpaidDebts}"
+                               FontSize="32"
+                               FontAttributes="Bold"
+                               TextColor="Orange" />
+                        <Label Text="debts"
+                               FontSize="12"
+                               TextColor="Gray" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Card 3: Overdue Alert (full width) -->
+                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        Padding="16"
+                        StrokeShape="RoundRectangle 8"
+                        Stroke="Red"
+                        BackgroundColor="{AppThemeBinding Light=#FFF5F5, Dark=#3D0000}"
+                        IsVisible="{Binding HasOverdueDebts}">
+                    <VerticalStackLayout Spacing="4">
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="⚠️"
+                                   FontSize="20"
+                                   VerticalOptions="Center" />
+                            <Label Text="{Binding OverdueDebts, StringFormat='{0} overdue debts'}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="Red"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <Label Text="These debts are older than 7 days"
+                               FontSize="13"
+                               TextColor="Red" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Quick Add Button -->
+            <Button Text="+ Quick Add Event"
+                    Command="{Binding AddEventCommand}"
+                    BackgroundColor="{StaticResource Primary}"
+                    FontSize="16"
+                    HeightRequest="50"
+                    CornerRadius="8" />
+
+            <!-- Overdue Debts List -->
+            <VerticalStackLayout Spacing="8" IsVisible="{Binding HasOverdueDebts}">
+                <Label Text="Overdue Debts (older than 7 days)"
+           FontSize="16"
+           FontAttributes="Bold"
+           TextColor="Red" />
+
+                <CollectionView ItemsSource="{Binding OverdueDebtList}"
+                    SelectionMode="None">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:AppEvent">
+                            <Border Padding="10" Margin="0,3"
+                        StrokeShape="RoundRectangle 6"
+                        Stroke="Red"
+                        BackgroundColor="{AppThemeBinding Light=#FFF5F5, Dark=#3D0000}">
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                        <Label Text="{Binding ContactName}"
+           FontSize="11"
+           TextColor="{StaticResource Primary}"
+           IsVisible="{Binding ContactName, Converter={StaticResource IsNotEmptyConverter}}" />
+                                        <Label Text="{Binding Description}"
+           FontSize="14"
+           FontAttributes="Bold" />
+                                        <Label Text="{Binding EventDate, StringFormat='Due: {0:dd/MM/yyyy}'}"
+           FontSize="11"
+           TextColor="Gray" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1"
+                               Text="{Binding Amount, StringFormat='{0:N2}'}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="Red"
+                               VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- Recent Events Section -->
+            <Label Text="Recent Events"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   Margin="0,8,0,0" />
+
+            <CollectionView ItemsSource="{Binding RecentEvents}"
+                            SelectionMode="None"
+                            HeightRequest="400">
+
+                <CollectionView.EmptyView>
+                    <Label Text="No events yet."
+                           HorizontalOptions="Center"
+                           TextColor="Gray" />
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:AppEvent">
+                        <Border Padding="10" Margin="0,3"
+                                StrokeShape="RoundRectangle 6"
+                                Stroke="{StaticResource Primary}"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                <!-- Type Badge -->
+                                <Border Grid.Column="0"
+                                        Padding="6,2"
+                                        StrokeShape="RoundRectangle 4"
+                                        Stroke="Transparent"
+                                        BackgroundColor="{StaticResource Primary}"
+                                        VerticalOptions="Center">
+                                    <Label Text="{Binding Type}"
+                                           FontSize="10"
+                                           TextColor="White" />
+                                </Border>
+
+                                <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                                    <Label Text="{Binding ContactName}"
+           FontSize="11"
+           FontAttributes="Bold"
+           TextColor="{StaticResource Primary}"
+           IsVisible="{Binding ContactName, Converter={StaticResource IsNotEmptyConverter}}" />
+                                    <Label Text="{Binding Description}"
+           FontSize="13"
+           LineBreakMode="TailTruncation" />
+                                </VerticalStackLayout>
+
+                                <!-- Amount -->
+                                <Label Grid.Column="2"
+                                       Text="{Binding Amount, StringFormat='{0:N2}'}"
+                                       FontSize="13"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -7,14 +7,17 @@
 
     <TabBar>
         <ShellContent
+            Title="Dashboard"
+            ContentTemplate="{DataTemplate views:DashboardPage}"
+            Route="DashboardPage" />
+
+        <ShellContent
             Title="Register"
-            Icon="icon_events.png"
             ContentTemplate="{DataTemplate views:EventsPage}"
             Route="EventsPage" />
 
         <ShellContent
             Title="Contacts"
-            Icon="icon_contacts.png"
             ContentTemplate="{DataTemplate views:ContactsPage}"
             Route="ContactsPage" />
     </TabBar>
