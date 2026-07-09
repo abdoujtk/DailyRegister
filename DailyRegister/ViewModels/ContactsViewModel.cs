@@ -52,4 +52,10 @@ public partial class ContactsViewModel : ObservableObject
         // We'll pass data a simple way
         EditContactStore.ContactToEdit = contact;
     }
+
+    [RelayCommand]
+    private async Task ViewContactAsync(Contact contact)
+    {
+        await Shell.Current.GoToAsync($"ContactDetail?contactId={contact.Id}");
+    }
 }

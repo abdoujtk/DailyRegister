@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:DailyRegister.ViewModels"
+             xmlns:models="clr-namespace:DailyRegister.Models"
+             x:Class="DailyRegister.Views.ContactDetailPage"
+             x:DataType="viewmodels:ContactDetailViewModel"
+             Title="Contact Detail">
+
+    <ScrollView Padding="16">
+        <VerticalStackLayout Spacing="14">
+
+            <!-- Contact Name -->
+            <Label Text="{Binding Contact.Name}"
+                   FontSize="24"
+                   FontAttributes="Bold" />
+
+            <!-- Phone -->
+            <HorizontalStackLayout Spacing="4" IsVisible="{Binding Contact.Phone, Converter={StaticResource IsNotEmptyConverter}}">
+                <Label Text="📞" FontSize="16" VerticalOptions="Center" />
+                <Label Text="{Binding Contact.Phone}"
+                       FontSize="16"
+                       VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+            <!-- Notes -->
+            <Label Text="{Binding Contact.Notes}"
+                   FontSize="14"
+                   TextColor="Gray"
+                   IsVisible="{Binding Contact.Notes, Converter={StaticResource IsNotEmptyConverter}}" />
+
+            <!-- Unpaid Debts Warning -->
+            <Border Padding="14"
+                    StrokeShape="RoundRectangle 8"
+                    Stroke="Red"
+                    BackgroundColor="{AppThemeBinding Light=#FFF5F5, Dark=#3D0000}"
+                    IsVisible="{Binding HasUnpaidDebts}">
+                <VerticalStackLayout Spacing="4">
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="⚠️" FontSize="20" VerticalOptions="Center" />
+                        <Label Text="{Binding UnpaidDebtsCount, StringFormat='{0} unpaid debts'}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="Red"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding TotalUnpaidAmount, StringFormat='Total: {0:N2}'}"
+                           FontSize="14"
+                           TextColor="Red" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="← Back"
+        Command="{Binding GoBackCommand}"
+        BackgroundColor="Gray"
+        HorizontalOptions="Start"
+            
+        Margin="0,0,0,8" />
+
+            <!-- Events for this Contact -->
+            <Label Text="Events"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   Margin="0,8,0,0" />
+
+            <CollectionView ItemsSource="{Binding ContactEvents}"
+                            SelectionMode="None">
+
+                <CollectionView.EmptyView>
+                    <Label Text="No events for this contact."
+                           HorizontalOptions="Center"
+                           TextColor="Gray"
+                           Margin="0,20" />
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:AppEvent">
+                        <Border Padding="12" Margin="0,3"
+                                StrokeShape="RoundRectangle 8"
+                                Stroke="{StaticResource Primary}"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+
+                            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="4">
+                                <!-- Row 0: Type badge, Status badge, Date -->
+                                <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Spacing="8">
+                                    <Border Padding="6,2"
+                                            StrokeShape="RoundRectangle 4"
+                                            Stroke="Transparent"
+                                            BackgroundColor="{StaticResource Primary}">
+                                        <Label Text="{Binding Type}"
+                                               FontSize="11"
+                                               TextColor="White" />
+                                    </Border>
+
+                                    <Border Padding="6,2"
+                                            StrokeShape="RoundRectangle 4"
+                                            Stroke="Transparent"
+                                            IsVisible="{Binding Status, Converter={StaticResource IsNotNullConverter}}">
+                                        <Border.Triggers>
+                                            <DataTrigger TargetType="Border"
+                                                         Binding="{Binding Status}"
+                                                         Value="paid">
+                                                <Setter Property="BackgroundColor" Value="Green" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Border"
+                                                         Binding="{Binding Status}"
+                                                         Value="unpaid">
+                                                <Setter Property="BackgroundColor" Value="Red" />
+                                            </DataTrigger>
+                                        </Border.Triggers>
+                                        <Label Text="{Binding Status}"
+                                               FontSize="11"
+                                               TextColor="White" />
+                                    </Border>
+
+                                    <Label Text="{Binding EventDate, StringFormat='{0:dd/MM/yyyy}'}"
+                                           FontSize="12"
+                                           TextColor="Gray"
+                                           VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+
+                                <!-- Amount -->
+                                <Label Grid.Row="0" Grid.Column="1"
+                                       Text="{Binding Amount, StringFormat='{0:N2}'}"
+                                       FontSize="14"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center" />
+
+                                <!-- Row 1: Description -->
+                                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                       Text="{Binding Description}"
+                                       FontSize="13"
+                                       LineBreakMode="TailTruncation" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -25,6 +25,7 @@ namespace DailyRegister
             builder.Services.AddTransient<AddEditEventViewModel>();
             builder.Services.AddTransient<EventDetailViewModel>();
             builder.Services.AddSingleton<DashboardViewModel>();
+            builder.Services.AddTransient<ContactDetailViewModel>();
 
             // Pages
             builder.Services.AddSingleton<ContactsPage>();
@@ -33,6 +34,7 @@ namespace DailyRegister
             builder.Services.AddTransient<AddEditEventPopup>();
             builder.Services.AddTransient<EventDetailPage>();
             builder.Services.AddSingleton<DashboardPage>();
+            builder.Services.AddTransient<ContactDetailPage>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
